@@ -1,0 +1,67 @@
+asyncapi: '3.0.0'
+info:
+  title: Test MQTT API
+  version: '1.0.0'
+servers:
+  mqtt-server:
+    host: test.mosquitto.org
+    protocol: mqtt
+    bindings:
+      mqtt:
+        bindingVersion: latest
+defaultContentType: application/json
+channels:
+  cloud-events:
+    address: 'cloud-event'
+    messages:
+      cloud-event:
+        payload:
+          schemaFormat: application/schema+json
+          schema:
+            Keywords:
+            - Type: Object
+            - Properties:
+                specversion: &o0
+                  Keywords:
+                  - Type: String
+                  BaseUri: https://json-everything.net/b429b1303e
+                id: *o0
+                time: *o0
+                source: *o0
+                type: *o0
+                subject: *o0
+                dataschema: *o0
+                datacontenttype: *o0
+                data:
+                  Keywords:
+                  - Type: Object
+                  - Schema: &o1
+                      BoolValue: true
+                      BaseUri: https://json-schema.org/true
+                  BaseUri: https://json-everything.net/84d4fb510d
+            - Properties:
+              - id
+              - specversion
+              - source
+              - type
+            - Schema: *o1
+            BaseUri: https://json-everything.net/e9fc17dff7
+        contentType: application/cloudevents+json
+        bindings:
+          mqtt:
+            bindingVersion: latest
+    servers:
+    - $ref: '#/servers/mqtt-server'
+    bindings:
+      mqtt:
+        bindingVersion: latest
+operations:
+  subscribeToCloudEvents:
+    action: send
+    channel:
+      $ref: '#/channels/cloud-events'
+    messages:
+    - $ref: '#/channels/cloud-events/messages/cloud-event'
+    bindings:
+      mqtt:
+        bindingVersion: latest
